@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Joki Keren ALL Server | Jasa Joki SAMP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Smooth scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
+    :root {
+      --bg-primary: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      --text-primary: #fff;
+      --card-bg: rgba(255, 255, 255, 0.08);
+      --price-bg: rgba(0, 20, 30, 0.25);
+      --btn-gradient: linear-gradient(to right, #fc00ff, #00dbde);
+      --border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .light-mode {
+      --bg-primary: linear-gradient(135deg, #f5f7fa, #e4edf9, #dce6f4);
+      --text-primary: #222;
+      --card-bg: rgba(0, 0, 0, 0.05);
+      --price-bg: rgba(240, 240, 255, 0.5);
+      --btn-gradient: linear-gradient(to right, #6a11cb, #2575fc);
+      --border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 0.4s, color 0.4s;
+      position: relative;
+    }
+
+    /* Particle Container */
+    #tsparticles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem;
+      position: relative;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s;
+      z-index: 10;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 3.5rem;
+      background: linear-gradient(to right, #00dbde, #fc00ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      opacity: 0.8;
+      margin-bottom: 2rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .service-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 1.5rem;
+      flex: 1 1 250px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .service-card h3 {
+      color: #00dbde;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .samp-icon {
+      width: 24px;
+      height: 24px;
+      fill: #00dbde;
+    }
+
+    .price-list {
+      text-align: center;
+      margin: 3rem 0;
+    }
+
+    .price-list h2 {
+      font-family: 'Orbitron', monospace;
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .price-card {
+      background: var(--price-bg);
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      border-radius: 16px;
+      padding: 1.5rem;
+      max-width: 600px;
+      margin: 0 auto;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 255, 255, 0.1);
+      animation: float 4s ease-in-out infinite;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .price-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      border-color: rgba(0, 255, 255, 0.7);
+      box-shadow: 0 8px 30px rgba(0, 255, 255, 0.35),
+                  0 0 0 2px rgba(255, 255, 255, 0.05);
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .price-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border-color);
+      align-items: center;
+      transition: color 0.2s;
+    }
+
+    .price-item:hover {
+      color: #00dbde;
+    }
+
+    .price-item:last-child {
+      border-bottom: none;
+    }
+
+    .price-item .name {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .price-item .price {
+      color: #00dbde;
+      font-weight: bold;
+    }
+
+    .order-form {
+      background: rgba(0, 0, 0, 0.15);
+      padding: 2rem;
+      border-radius: 16px;
+      margin: 2rem 0;
+    }
+
+    .order-form h2 {
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-family: 'Orbitron', monospace;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .form-group select,
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-primary);
+    }
+
+    .form-group input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background: var(--btn-gradient);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .discord-cta {
+      text-align: center;
+      margin: 3rem 0;
+    }
+
+    .discord-btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: #5865F2;
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .discord-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 20px rgba(88, 101, 242, 0.5);
+    }
+
+    /* WHATSAPP FLOATING BUTTON */
+    .whatsapp-float {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 30px;
+      right: 30px;
+      background: #25D366;
+      color: white;
+      border-radius: 50px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      text-decoration: none;
+      transition: transform 0.3s;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      opacity: 0.7;
+      font-size: 0.9rem;
+    }
+
+    .reviews {
+      margin: 4rem 0 2rem;
+      text-align: center;
+      padding-bottom: 4rem;
+    }
+
+    .reviews h2 {
+      font-family: 'Orbitron', monospace;
+      margin-bottom: 1.5rem;
+    }
+
+    .review-form {
+      background: rgba(0, 0, 0, 0.15);
+      padding: 1.5rem;
+      border-radius: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .rating {
+      margin: 1rem 0;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    .rating i {
+      color: #ddd;
+      transition: color 0.2s;
+    }
+
+    .rating i:hover,
+    .rating i.active {
+      color: #ffcc00;
+    }
+
+    .review-list {
+      margin-top: 2rem;
+      text-align: left;
+      max-width: 600px;
+      margin: 2rem auto 0;
+    }
+
+    .review-item {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .review-item .stars {
+      color: #ffcc00;
+      margin-bottom: 0.25rem;
+    }
+
+    /* Rate Limit Alert */
+    .rate-limit-alert {
+      background: #ff6b6b;
+      color: white;
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- PARTICLE BACKGROUND -->
+  <div id="tsparticles"></div>
+
+  <header>
+    <div class="theme-toggle" id="themeToggle">
+      <i class="fas fa-moon"></i>
+    </div>
+    <h1>JOKI KEREN</h1>
+    <p class="subtitle">Jasa Joki MM, Joki Level DLL. Terpercaya</p>
+  </header>
+
+  <div class="container">
+    <div class="services">
+      <div class="service-card">
+        <h3><svg class="samp-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2V7zm0 8h2v2h-2v-2z"/></svg> Jasa MM</h3>
+        <p>Joki MM cepat & aman. Tinggal tidur uang ic sudah masuk ke akun kalian!</p>
+      </div>
+      <div class="service-card">
+        <h3><svg class="samp-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2V7zm0 8h2v2h-2v-2z"/></svg> Joki Level</h3>
+        <p>Naikkan level akun kamu tanpa harus kalian mainkan!</p>
+      </div>
+      <div class="service-card">
+        <h3><svg class="samp-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2V7zm0 8h2v2h-2v-2z"/></svg> Jasa CS/SSRP CK</h3>
+        <p>Mau bikin CS tapi males? atau mau bikin ssrp tapi males? langsung kirim foto langsung jadi!</p>
+      </div>
+    </div>
+
+    <div class="price-list">
+      <h2><svg class="samp-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2V7zm0 8h2v2h-2v-2z"/></svg> Price List</h2>
+      <div class="price-card">
+        <div class="price-item">
+          <span class="name"><svg class="samp-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2V7zm0 8h2v2h-2v-2z"/></svg> Joki MM</span>
+          <span class="price">Rate 1k ic 4k ooc</span>
+        </div>
+        <div class="price-item">
+          <span class="name"><svg class="samp-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2V7zm0 8h2v2h-2v-2z"/></svg> Joki Level</span>
+          <span class="price">Perjam 4K/ Perlevel 2k(XP)</span>
+        </div>
+        <div class="price-item">
+          <span class="name"><svg class="samp-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2V7zm0 8h2v2h-2v-2z"/></svg> Jasa CS</span>
+          <span class="price">Rp 5.000 Free Revisi 3X S&K</span>
+        </div>
+        <div class="price-item">
+          <span class="name"><svg class="samp-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2V7zm0 8h2v2h-2v-2z"/></svg> Jasa SSRP CK/STORY</span>
+          <span class="price">Rp 15.000</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-form">
+      <h2>Pesan Jasa Sekarang</h2>
+      <div class="rate-limit-alert" id="rateLimitAlert">
+        ⏳ Harap tunggu sebelum mengirim ulang. Batas: 1 permintaan per 10 menit.
+      </div>
+      <form id="orderForm">
+        <div class="form-group">
+          <label for="username">Username Discord</label>
+          <input type="text" id="username" placeholder="Contoh: UdihMpruy123" required />
+        </div>
+        <div class="form-group">
+          <label for="service">Jenis Jasa</label>
+          <select id="service" required>
+            <option value="" disabled selected>Pilih Jasa</option>
+            <option value="mm">Joki MM</option>
+            <option value="level">Joki Level</option>
+            <option value="item">Jasa CS,CK,STORY CK</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="notes">Catatan Tambahan</label>
+          <textarea id="notes" rows="3" placeholder="Contoh: Bang aku mau joki mm 15k ic
+Contoh: Bang aku mau jasa SSRP CK/NO CK
+NOTE: ISI Username DISCORD DENGAN BENAR!"></textarea>
+        </div>
+        <button type="submit" class="btn">Kirim Pesanan</button>
+      </form>
+    </div>
+
+    <div class="discord-cta">
+      <a href="https://discord.gg/gvp3ksRQNj" target="_blank" class="discord-btn">Gabung ke Discord Kami</a>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2026 Adalah Pokoknya. All rights reserved.
+  </footer>
+
+  <div class="reviews" id="reviews-section">
+    <h2>⭐ Beri Ulasan & Rating</h2>
+    <div class="review-form">
+      <div class="rating" id="ratingStars">
+        <i class="far fa-star" data-value="1"></i>
+        <i class="far fa-star" data-value="2"></i>
+        <i class="far fa-star" data-value="3"></i>
+        <i class="far fa-star" data-value="4"></i>
+        <i class="far fa-star" data-value="5"></i>
+      </div>
+      <div class="form-group">
+        <textarea id="reviewText" rows="3" placeholder="Ceritakan pengalaman kamu..." style="background:rgba(255,255,255,0.1);"></textarea>
+      </div>
+      <button class="btn" id="submitReview">Kirim Ulasan</button>
+    </div>
+    <div class="review-list" id="reviewList"></div>
+  </div>
+
+  <a href="https://wa.me/6289682138832?text=Halo%20bang%2C%20saya%20mau%20pesan%20jasa%20joki!" 
+     class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <!-- tsParticles -->
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+  <script>
+    // Particle Background
+    tsParticles.load("tsparticles", {
+      fpsLimit: 60,
+      particles: {
+        number: { value: 80, density: { enable: true, area: 800 } },
+        color: { value: ["#00dbde", "#fc00ff", "#00ffcc"] },
+        shape: { type: "circle" },
+        opacity: { value: 0.3, random: true },
+        size: { value: { min: 1, max: 4 }, random: true },
+        move: {
+          enable: true,
+          speed: 1.5,
+          direction: "none",
+          random: true,
+          straight: false,
+          outModes: "out"
+        }
+      },
+      interactivity: {
+        detectsOn: "canvas",
+        events: {
+          onHover: { enable: true, mode: "repulse" },
+          onClick: { enable: true, mode: "push" },
+          resize: true
+        },
+        modes: {
+          repulse: { distance: 100, duration: 0.4 },
+          push: { quantity: 4 }
+        }
+      },
+      detectRetina: true
+    });
+
+    // DARK/LIGHT MODE
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+
+    if (localStorage.getItem('theme') === 'light') {
+      body.classList.add('light-mode');
+      icon.className = 'fas fa-sun';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('light-mode');
+      const isLight = body.classList.contains('light-mode');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+    });
+
+    // RATING
+    const stars = document.querySelectorAll('.rating i');
+    let currentRating = 0;
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        currentRating = parseInt(star.getAttribute('data-value'));
+        stars.forEach((s, idx) => {
+          s.className = idx < currentRating ? 'fas fa-star' : 'far fa-star';
+        });
+      });
+    });
+
+    // RATE LIMIT UTIL
+    function canSubmitForm(key, minutes = 10) {
+      const now = Date.now();
+      const lastSubmit = localStorage.getItem(key);
+      if (!lastSubmit) return true;
+      const diff = (now - parseInt(lastSubmit)) / (1000 * 60);
+      return diff >= minutes;
+    }
+
+    function setLastSubmit(key) {
+      localStorage.setItem(key, Date.now().toString());
+    }
+
+    // KIRIM Ulasan ke Discord
+    const REVIEW_WEBHOOK = "https://discord.com/api/webhooks/1456353929309847807/7RfdOInsgPM2u9aP5cLEvlOlS_bumf4ikmREk6Dp7gXMfWntcvEraxxE_cX0lktHzNak";
+    document.getElementById('submitReview').addEventListener('click', async () => {
+      if (!canSubmitForm('lastReview', 5)) {
+        alert("⏳ Tunggu 5 menit sebelum kirim ulasan lagi.");
+        return;
+      }
+
+      const text = document.getElementById('reviewText').value.trim();
+      if (!currentRating || !text) {
+        alert('Harap beri rating dan komentar!');
+        return;
+      }
+
+      const payload = {
+        username: "⭐ Ulasan Pelanggan kontol",
+        avatar_url: "https://i.imgur.com/8JmJXkP.png",
+        embeds: [{
+          title: `⭐⭐⭐⭐⭐ (${currentRating}/5)`,
+          description: text,
+          color: 0xffcc00,
+          footer: { text: "Joki Keren | Ulasan Pelanggan" },
+          timestamp: new Date().toISOString()
+        }]
+      };
+
+      try {
+        const res = await fetch(REVIEW_WEBHOOK, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          alert("✅ Ulasan berhasil dikirim!");
+          document.getElementById('reviewText').value = '';
+          currentRating = 0;
+          stars.forEach(s => s.className = 'far fa-star');
+          setLastSubmit('lastReview');
+        } else throw new Error();
+      } catch (err) {
+        alert("❌ Gagal mengirim ulasan.");
+      }
+    });
+
+    // KIRIM Pesanan dengan RATE LIMIT (10 menit)
+    const ORDER_WEBHOOK = "https://discord.com/api/webhooks/1456353929309847807/7RfdOInsgPM2u9aP5cLEvlOlS_bumf4ikmREk6Dp7gXMfWntcvEraxxE_cX0lktHzNak";
+    const rateLimitAlert = document.getElementById('rateLimitAlert');
+
+    document.getElementById('orderForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      if (!canSubmitForm('lastOrder', 10)) {
+        rateLimitAlert.style.display = 'block';
+        setTimeout(() => rateLimitAlert.style.display = 'none', 5000);
+        return;
+      }
+
+      const username = document.getElementById('username').value;
+      const service = document.getElementById('service').value;
+      const notes = document.getElementById('notes').value;
+
+      const serviceNames = {
+        mm: "JOKI MM",
+        level: "JOKI LEVEL",
+        item: "JASA CS,CK,STORY CK"
+      };
+
+      const embed = {
+        title: "🎯 Pesanan Jasa Baru,KERJA ANJING KERJA",
+        color: 0x00ffcc,
+        fields: [
+          { name: "Username Discord", value: username, inline: true },
+          { name: "Jenis Jasa", value: serviceNames[service] || service, inline: true },
+          { name: "Catatan", value: notes || "–", inline: false }
+        ],
+        timestamp: new Date().toISOString(),
+        footer: { text: "Ekal Keren | Sistem Otomatis" }
+      };
+
+      const payload = {
+        username: "BABU EKAL",
+        avatar_url: "https://i.imgur.com/8JmJXkP.png",
+        embeds: [embed]
+      };
+
+      try {
+        const response = await fetch(ORDER_WEBHOOK, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          alert("✅ Pesanan berhasil dikirim!");
+          this.reset();
+          setLastSubmit('lastOrder');
+        } else {
+          throw new Error("Gagal mengirim ke Discord.");
+        }
+      } catch (error) {
+        console.error(error);
+        alert("❌ Terjadi kesalahan. Coba lagi nanti.");
+      }
+    });
+  </script>
+</body>
+</html>

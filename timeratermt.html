@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Tools Joki MM</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family:'Segoe UI',system-ui,sans-serif;
+}
+body{
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#fff;
+}
+.container{
+    width:520px;
+    background:rgba(255,255,255,0.12);
+    padding:30px;
+    border-radius:22px;
+    backdrop-filter:blur(14px);
+    box-shadow:0 25px 45px rgba(0,0,0,0.45);
+}
+h1{text-align:center;margin-bottom:20px}
+
+.tabs{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+.tab{
+    flex:1;
+    text-align:center;
+    padding:12px;
+    cursor:pointer;
+    border-radius:14px;
+    background:rgba(0,0,0,0.35);
+}
+.tab.active{
+    background:linear-gradient(to right,#00c6ff,#0072ff);
+    color:#000;
+    font-weight:600;
+}
+
+.section{display:none}
+.section.active{display:block}
+
+label{display:block;margin-top:14px}
+input,textarea{
+    width:100%;
+    padding:12px;
+    margin-top:6px;
+    border-radius:12px;
+    border:none;
+}
+button{
+    width:100%;
+    margin-top:18px;
+    padding:13px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(to right,#00c6ff,#0072ff);
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+.box{
+    margin:18px 0;
+    padding:16px;
+    background:rgba(0,0,0,0.45);
+    border-radius:16px;
+}
+.pricelist{white-space:pre-line;font-size:14px}
+.admin-box{
+    background:rgba(255,255,255,0.15);
+    padding:18px;
+    border-radius:16px;
+    margin-top:18px;
+}
+small{opacity:.8}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>🛠 Tools Joki MM</h1>
+
+<div class="tabs">
+    <div class="tab active" onclick="openTab(0)">⏰ Jam</div>
+    <div class="tab" onclick="openTab(1)">💰 IC</div>
+    <div class="tab" onclick="openTab(2)">🔐 Admin</div>
+</div>
+
+<!-- JAM -->
+<div class="section active">
+<label>Jam Awal</label>
+<input type="time" id="startTime">
+
+<label>Tambah Jam</label>
+<input type="number" id="addHour">
+
+<button onclick="hitungJam()">Hitung Jam</button>
+<div class="box" id="hasilJam"></div>
+</div>
+
+<!-- IC -->
+<div class="section">
+<div class="box pricelist" id="priceTop"></div>
+
+<label>Uang Asli (Rp)</label>
+<input type="number" id="uangAsli">
+
+<label>Uang In-Game (IC)</label>
+<input type="number" id="uangIC">
+
+<small id="rateText"></small>
+<button onclick="hitungIC()">Hitung</button>
+
+<div class="box" id="hasilIC"></div>
+<div class="box pricelist" id="priceBottom"></div>
+</div>
+
+<!-- ADMIN -->
+<div class="section">
+<div id="loginAdminBox">
+<label>Password Admin</label>
+<input type="password" id="adminPass">
+<button onclick="loginAdmin()">Login</button>
+</div>
+
+<div id="dashboardAdmin" style="display:none">
+<div class="admin-box">
+<label>Rate (Rp per 1.000 IC)</label>
+<input type="number" id="newRate">
+<button onclick="saveRate()">Simpan Rate</button>
+</div>
+
+<div class="admin-box">
+<label>Price List Atas</label>
+<textarea id="adminPriceTop" rows="4"></textarea>
+<button onclick="savePrice()">Simpan</button>
+</div>
+
+<div class="admin-box">
+<label>Price List Bawah</label>
+<textarea id="adminPriceBottom" rows="4"></textarea>
+<button onclick="savePrice()">Simpan</button>
+</div>
+
+<div class="admin-box" id="adminInfo"></div>
+</div>
+</div>
+
+</div>
+
+<script>
+const ADMIN_PASSWORD="admin123";
+const DEFAULT_RATE=5;
+
+const DEFAULT_PRICE_TOP="🔥 PRICE LIST JOKI MM 🔥";
+const DEFAULT_PRICE_BOTTOM="📌 Hubungi admin untuk order";
+
+let RATE=localStorage.getItem("RATE")||DEFAULT_RATE;
+let priceTop=localStorage.getItem("PRICE_TOP")||DEFAULT_PRICE_TOP;
+let priceBottom=localStorage.getItem("PRICE_BOTTOM")||DEFAULT_PRICE_BOTTOM;
+
+updateUI();
+
+function openTab(i){
+    document.querySelectorAll(".tab").forEach((t,x)=>t.classList.toggle("active",x===i));
+    document.querySelectorAll(".section").forEach((s,x)=>s.classList.toggle("active",x===i));
+}
+
+function hitungJam(){
+    let [h,m]=startTime.value.split(":").map(Number);
+    let add=parseInt(addHour.value);
+    if(isNaN(h)||isNaN(add))return alert("Lengkapi data");
+    let total=h+add;
+    let hari=Math.floor(total/24);
+    let jam=total%24;
+    hasilJam.innerHTML=`<b>${jam.toString().padStart(2,"0")}:${m}</b><br>${hari?`+${hari} hari`:``}`;
+}
+
+function hitungIC(){
+    let r=parseFloat(uangAsli.value);
+    let i=parseFloat(uangIC.value);
+    if(r&&!i)hasilIC.innerHTML=`Rp ${r.toLocaleString()} = <b>${(r/RATE).toLocaleString()} IC</b>`;
+    else if(i&&!r)hasilIC.innerHTML=`${i.toLocaleString()} IC = <b>Rp ${(i*RATE).toLocaleString()}</b>`;
+    else alert("Isi salah satu");
+}
+
+function loginAdmin(){
+    if(adminPass.value===ADMIN_PASSWORD){
+        document.getElementById("loginAdminBox").style.display="none";
+        dashboardAdmin.style.display="block";
+        newRate.value=RATE;
+        adminPriceTop.value=priceTop;
+        adminPriceBottom.value=priceBottom;
+    }else alert("Password salah");
+}
+
+function saveRate(){
+    RATE=newRate.value;
+    localStorage.setItem("RATE",RATE);
+    updateUI();
+    adminInfo.innerText="✅ Rate diupdate";
+}
+
+function savePrice(){
+    priceTop=adminPriceTop.value;
+    priceBottom=adminPriceBottom.value;
+    localStorage.setItem("PRICE_TOP",priceTop);
+    localStorage.setItem("PRICE_BOTTOM",priceBottom);
+    updateUI();
+    adminInfo.innerText="✅ Price list diupdate";
+}
+
+function updateUI(){
+    rateText.innerText=`Rate aktif: 1.000 IC = Rp ${RATE}`;
+    document.getElementById("priceTop").innerText=priceTop;
+    document.getElementById("priceBottom").innerText=priceBottom;
+}
+</script>
+
+</body>
+</html>
